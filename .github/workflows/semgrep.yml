@@ -40,7 +40,6 @@ jobs:
         with:
           sarif_file: semgrep.sarif
         if: always()
-          steps:
       - uses: octokit/request-action@v2.x
         id: get_latest_release
         with:
