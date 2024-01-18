@@ -42,9 +42,6 @@ jobs:
           sarif_file: semgrep.sarif
         if: always()
       - name: Post sarif
-        id: get_latest_release
-        with:
-          route: GET /user
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
