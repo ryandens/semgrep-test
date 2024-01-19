@@ -36,17 +36,19 @@ jobs:
       - run: semgrep --config auto . --sarif -o semgrep.sarif
 
       # Upload SARIF file generated in previous step
-      - name: Upload SARIF file
-        uses: github/codeql-action/upload-sarif@v2
-        with:
-          sarif_file: semgrep.sarif
-        if: always()
+      # - name: Upload SARIF file
+      #   uses: github/codeql-action/upload-sarif@v2
+      #   with:
+      #     sarif_file: semgrep.sarif
+      #   if: always()
       - name: Post sarif
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-            API_RESPONSE=$(curl -v -X POST -H "Authorization: Bearer $GITHUB_TOKEN"  -H "Content-Type: multipart/form-data" -F "file=@semgrep.sarif" -F "codemodInputMetadata={\"github_repository_identifier\": {\"owner\": \"ryandens\", \"name\": \"semgrep-example\"}, \"github_ref\": \"refs/heads/main\", \"github_sha\": \"abc123def456ghi789\", \"tool_name\": \"ExampleTool\"};type=application/json" https://c28uspbu77.execute-api.us-east-1.amazonaws.com/prod/codemod-input)
-            echo "$API_RESPONSE"
+          run: |
+          curl -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=app.pixee.ai"
+        # run: |
+        #     API_RESPONSE=$(curl -v -X POST -H "Authorization: Bearer $GITHUB_TOKEN"  -H "Content-Type: multipart/form-data" -F "file=@semgrep.sarif" -F "codemodInputMetadata={\"github_repository_identifier\": {\"owner\": \"ryandens\", \"name\": \"semgrep-example\"}, \"github_ref\": \"refs/heads/main\", \"github_sha\": \"abc123def456ghi789\", \"tool_name\": \"ExampleTool\"};type=application/json" https://c28uspbu77.execute-api.us-east-1.amazonaws.com/prod/codemod-input)
+        #     echo "$API_RESPONSE"
 
 
 
