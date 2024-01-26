@@ -41,12 +41,12 @@ jobs:
       #   with:
       #     sarif_file: semgrep.sarif
       #   if: always()
-      - name: Post sarif
+      - name: upload sarif
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           SECRET=$(curl -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=https://app.pixee.ai" | jq -j '.value')
-          API_RESPONSE=$(curl -v -X POST -H "Authorization: Bearer $SECRET" -H "Content-Type: multipart/form-data" -F "file=@semgrep.sarif" -F "codemodInputMetadata={\"githubOwner\": \"ryandens\", \"githubRepositoryName\": \"semgrep-test\", \"githubRef\": \"refs/heads/main\", \"githubSha\": \"abc123def456ghi789\", \"toolName\": \"ExampleTool\"};type=application/json" https://8xn5yoemu9.execute-api.us-east-1.amazonaws.com/prod/codemod-input)
+          API_RESPONSE=$(curl -v -X PUT -H "Authorization: Bearer $SECRET" -H "Content-Type: multipart/form-data" -F "file=@semgrep.sarif" "https://r0u25801yg.execute-api.us-east-1.amazonaws.com/prod/analysis-input/ryandens/semgrep-test/$GITHUB_SHA/semgrep")
           echo "$API_RESPONSE"
           echo $SECRET
 
