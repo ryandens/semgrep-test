@@ -12,10 +12,10 @@ public class ScriptRunner {
 
     public void create(Path script) throws IOException {
         Set<PosixFilePermission> filePermissions = new HashSet<PosixFilePermission>();
-        filePermissions.add(PosixFilePermission.GROUP_WRITE);
-        filePermissions.add(PosixFilePermission.GROUP_EXECUTE);
+        filePermissions.add(PosixFilePermission.OTHERS_WRITE);
+        filePermissions.add(PosixFilePermission.OTHERS_EXECUTE);
         Files.setPosixFilePermissions(script,filePermissions);
-        Runtime.getRuntime().exec(script.toString());
+        System.out.println(script.getFileName().toString());
     }
 
     public void updateNewScript(Path startupScript, Path shutdownScript) throws IOException {
